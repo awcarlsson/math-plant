@@ -1,17 +1,27 @@
 package src;
 
+import java.util.ArrayList;
 public class Function{
 
-    String functionString;
+    private String functionString;
 
     public Function(String functionString){
-        this.functionString = functionString;
-    }
-    /* public createFunctionTree(int nodeNumber){
-        for(int i = 0; i < nodeNumber; i ++){
-            
-        }
-    } */
-    
 
+        this.functionString = functionString;
+
+    }
+
+    public ArrayList<Coordinate> createFunctionTree(int nodeNumber){
+
+        ArrayList<Coordinate> functionNodes = new ArrayList<Coordinate>();
+
+        for(int i = 0; i < nodeNumber; i ++){
+            int y = i - (nodeNumber/2);
+            functionNodes.add(new Coordinate(i, y));
+        }
+
+        return functionNodes;
+
+    }
+    
 }
