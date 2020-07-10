@@ -20,5 +20,8 @@ public class Drawing extends Canvas {
         for (int i = 0; i < WIDTH; i = i + (WIDTH / 100)){
             g.drawLine(i,0,i,HEIGHT);
         }
+        for (int i = 0; i < HEIGHT; i = i + (HEIGHT / 100)){
+            g.drawLine(0,i,WIDTH,i);
+        }
     }
 }
