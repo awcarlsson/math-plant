@@ -17,7 +17,7 @@ public class Drawing extends Canvas {
 
     public void paint(Graphics g) {
         g.fillOval(100, 100, 200, 200);
-        for (int i = 0; i < WIDTH / 100; i = i + WIDTH / 100){
+        for (int i = 0; i < WIDTH; i = i + (WIDTH / 100)){
             g.drawLine(i,0,i,HEIGHT);
         }
     }
