@@ -9,7 +9,7 @@ public class Drawing extends Canvas {
     public static void main(String[] args) {
         JFrame frame = new JFrame("My Drawing");
         Canvas canvas = new Drawing();
-        canvas.setSize(width, height);
+        canvas.setSize(WIDTH, HEIGHT);
         frame.add(canvas);
         frame.pack();
         frame.setVisible(true);
@@ -17,8 +17,8 @@ public class Drawing extends Canvas {
 
     public void paint(Graphics g) {
         g.fillOval(100, 100, 200, 200);
-        for (int i = 0; i < width / 100; i = i + width / 100){
-            g.drawLine(i,0,i,height);
+        for (int i = 0; i < WIDTH / 100; i = i + WIDTH / 100){
+            g.drawLine(i,0,i,HEIGHT);
         }
     }
 }
