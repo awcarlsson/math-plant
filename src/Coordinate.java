@@ -8,10 +8,10 @@ public class Coordinate {
         this.y = y;
     }
     public int getX(){
-        return x;
+        return x+Graph.WIDTH/2;
     }
     public int getY(){
-        return y;
+        return y+Graph.HEIGHT/2;
     }
     public void setX(int x){
         this.x = x;
