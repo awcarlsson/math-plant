@@ -4,22 +4,19 @@ import java.awt.Canvas;
 import java.awt.Graphics;
 import javax.swing.JFrame;
 
-/**
- * Creates the whole scene visible to the user
- */
-public class Scene extends Canvas {
+public class Graph extends Canvas {
 
     private static int HEIGHT = 600;
     private static int WIDTH = 1200;
     private static int ASPECT_RATIO = WIDTH/HEIGHT;
 
-    public Scene() {
+    public Graph() {
     }
     
     // 
     public static void setup(){
-        JFrame frame = new JFrame("Scene");
-        Canvas canvas = new Scene();
+        JFrame frame = new JFrame("Graph");
+        Canvas canvas = new Graph();
         canvas.setSize(WIDTH, HEIGHT);
         frame.add(canvas);
         frame.pack();
@@ -27,7 +24,6 @@ public class Scene extends Canvas {
     }
 
     public void paint(Graphics g) {
-        g.fillOval(100, 100, 200, 200);
         for (int i = 0; i < WIDTH; i = i + (WIDTH / (100 * ASPECT_RATIO))){
             g.drawLine(i,0,i,HEIGHT);
         }

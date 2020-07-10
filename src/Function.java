@@ -7,11 +7,11 @@ public class Function{
     public Function(String functionString){
         this.functionString = functionString;
     }
-    public createFunctionTree(int nodeNumber){
+    /* public createFunctionTree(int nodeNumber){
         for(int i = 0; i < nodeNumber; i ++){
             
         }
-    }
+    } */
     
 
 }
