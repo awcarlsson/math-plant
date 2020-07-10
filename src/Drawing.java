@@ -1,3 +1,5 @@
+package src;
+
 import java.awt.Canvas;
 import java.awt.Graphics;
 import javax.swing.JFrame;
@@ -6,7 +8,10 @@ public class Drawing extends Canvas {
     public static int HEIGHT = 600;
     public static int WIDTH = 1200;
 
-    public static void main(String[] args) {
+    public Drawing() {
+    }
+    
+    public static void setup(){
         JFrame frame = new JFrame("My Drawing");
         Canvas canvas = new Drawing();
         canvas.setSize(WIDTH, HEIGHT);
