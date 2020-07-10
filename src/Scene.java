@@ -3,7 +3,7 @@ package src;
 import java.awt.Canvas;
 import java.awt.Graphics;
 import javax.swing.JFrame;
-
+import java.util.ArrayList;
 /**
  * Creates the whole scene visible to the user
  */
@@ -34,5 +34,11 @@ public class Scene extends Canvas {
         for (int i = 0; i < HEIGHT; i = i + (HEIGHT / 100)){
             g.drawLine(0,i,WIDTH,i);
         }
+
+        
+
+
+
+
     }
 }
