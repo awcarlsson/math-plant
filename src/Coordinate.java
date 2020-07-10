@@ -11,7 +11,7 @@ public class Coordinate {
         return x+Graph.WIDTH/2;
     }
     public int getY(){
-        return y+Graph.HEIGHT/2;
+        return -y+Graph.HEIGHT/2;
     }
     public void setX(int x){
         this.x = x;

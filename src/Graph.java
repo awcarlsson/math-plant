@@ -35,8 +35,10 @@ public class Graph extends Canvas {
         Function f = new Function("Hello");
         ArrayList<Coordinate> points = f.createFunctionTree(200);
 
-        for(Coordinate point : points){
-            g.fillOval(point.getX(),point.getY(),10,10);
+        for(int i = 0; i < points.size()-2; i++){
+            g.setColor()
+            g.fillOval(points.get(i).getX(),points.get(i).getY(),1,1);
+            g.drawLine(points.get(i).getX(),points.get(i).getY(),points.get(i+1).getX(),points.get(i+1).getY());
         }
 
 
