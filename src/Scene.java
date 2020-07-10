@@ -4,16 +4,19 @@ import java.awt.Canvas;
 import java.awt.Graphics;
 import javax.swing.JFrame;
 
-public class Drawing extends Canvas {
-    public static int HEIGHT = 600;
-    public static int WIDTH = 1200;
+public class Scene extends Canvas {
 
-    public Drawing() {
+    private static int HEIGHT = 600;
+    private static int WIDTH = 1200;
+
+    // TODO: Background/light source should change based on user choice of scene
+
+    public Scene() {
     }
     
     public static void setup(){
         JFrame frame = new JFrame("My Drawing");
-        Canvas canvas = new Drawing();
+        Canvas canvas = new Scene();
         canvas.setSize(WIDTH, HEIGHT);
         frame.add(canvas);
         frame.pack();
