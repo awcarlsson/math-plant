@@ -2,7 +2,7 @@ package src;
 
 public class Main {
     public static void main(String [] args){
-        Scene graph = new Scene();
+        Graph graph = new Graph();
         graph.setup();
     }
 }
