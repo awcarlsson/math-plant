@@ -28,17 +28,19 @@ public class Scene extends Canvas {
 
     public void paint(Graphics g) {
         g.fillOval(100, 100, 200, 200);
+        Plant p = new Plant(0, 0);
+        //ArrayList<Coordinate> p_coords = p.getPlantCoords();
+        //System.out.println(p.getPlantOrigin().getX());
+        /* for (Coordinate coord : p_coords){
+            System.out.println(coord.getX());
+            g.fillOval(coord.getX(),coord.getY(),100,100);
+        } */
+        g.fillOval(100, 100, 200, 200);
         for (int i = 0; i < WIDTH; i = i + (WIDTH / (100 * ASPECT_RATIO))){
             g.drawLine(i,0,i,HEIGHT);
         }
         for (int i = 0; i < HEIGHT; i = i + (HEIGHT / 100)){
             g.drawLine(0,i,WIDTH,i);
-        }
-
-        
-
-
-
-
+        } 
     }
 }
