@@ -15,7 +15,7 @@ public class Graph extends Canvas {
     }
     
     // 
-    public static void setup(){
+    public void setup(){
         JFrame frame = new JFrame("Graph");
         Canvas canvas = new Graph();
         canvas.setSize(WIDTH, HEIGHT);
@@ -36,7 +36,7 @@ public class Graph extends Canvas {
         ArrayList<Coordinate> points = f.createFunctionTree(200);
 
         for(int i = 0; i < points.size()-2; i++){
-            g.setColor()
+            //g.setColor();
             g.fillOval(points.get(i).getX(),points.get(i).getY(),1,1);
             g.drawLine(points.get(i).getX(),points.get(i).getY(),points.get(i+1).getX(),points.get(i+1).getY());
         }

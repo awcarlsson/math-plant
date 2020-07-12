@@ -17,7 +17,7 @@ public class Scene extends Canvas {
     }
     
     // 
-    public static void setup(){
+    public void setup(){
         JFrame frame = new JFrame("Scene");
         Canvas canvas = new Scene();
         canvas.setSize(WIDTH, HEIGHT);
