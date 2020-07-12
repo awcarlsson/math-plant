@@ -15,8 +15,9 @@ public class Function{
 
         ArrayList<Coordinate> functionNodes = new ArrayList<Coordinate>();
         int count = 0;
-        for(int i = -Graph.WIDTH/2; count < nodeNumber; i = i + Graph.WIDTH/nodeNumber){
-            double y = 2.0*((double)(i))*Math.sin(i);
+        for(int i = -Graph.WIDTH/2; count < nodeNumber*10; i = i + Graph.WIDTH/nodeNumber){
+            double x = (double)(i)/10.0;
+            double y = 2.0*(x*x)*Math.sin((x*x))/10.0;
             functionNodes.add(new Coordinate(i, (int)(y)));
             count ++;
         }

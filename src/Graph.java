@@ -16,7 +16,7 @@ public class Graph extends Canvas {
     }
     
     // 
-    public static void setup(){
+    public void setup(){
         JFrame frame = new JFrame("Graph");
         Canvas canvas = new Graph();
         canvas.setSize(WIDTH, HEIGHT);
