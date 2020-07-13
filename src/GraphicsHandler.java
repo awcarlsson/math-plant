@@ -8,7 +8,7 @@ import javax.swing.*;
 
 public class GraphicsHandler extends JPanel implements ActionListener {
 
-    private Timer timer = new Timer(1000, this); // Number of milliseconds for each update (16 = 60 fps)
+    private Timer timer = new Timer(100, this); // Number of milliseconds for each update (16 = 60 fps)
     private Plant p;
 
     public GraphicsHandler(){
@@ -45,10 +45,19 @@ public class GraphicsHandler extends JPanel implements ActionListener {
         } */
         ArrayList<PlantNode> nodes = p.getPlant();
         for(int i = 0; i < nodes.size(); i++){
-            g2d.setColor(Color.GREEN);
-            g2d.fillOval(nodes.get(i).getDisplayX(), nodes.get(i).getDisplayY(), 30, 30);
-            if(i>0)
+            if(nodes.get(i).getY() < 0)
+                g2d.setColor(Color.WHITE);
+            else
+                g2d.setColor(Color.GREEN);
+            if(i > 0){
+                Stroke stroke = new BasicStroke(6f);
+                g2d.setStroke(stroke);
                 g2d.drawLine(nodes.get(i).getDisplayX(), nodes.get(i).getDisplayY(), nodes.get(i-1).getDisplayX(), nodes.get(i-1).getDisplayY());
+            }
+            if (i == 0) {
+                g2d.setColor(new Color(79, 37, 2));
+                g2d.fillOval(nodes.get(i).getDisplayX()-10, nodes.get(i).getDisplayY()-10, 20, 20);
+            }
         }
     }
 
