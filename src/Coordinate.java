@@ -11,19 +11,27 @@ public class Coordinate {
     }
 
     public static int translateX(int x){
-        return x+Scene.WIDTH/2;
+        return x+Frame.WIDTH/2;
     }
 
     public static int translateY(int y){
-        return -y+Scene.HEIGHT/2;
+        return -y+Frame.HEIGHT/2;
     }
 
     public int getX(){
-        return x+Scene.WIDTH/2;
+        return x;
     }
 
     public int getY(){
-        return -y+Scene.HEIGHT/2;
+        return y;
+    }
+
+    public int getDisplayX(){
+        return x+Frame.WIDTH/2;
+    }
+
+    public int getDisplayY(){
+        return -y+Frame.HEIGHT/2;
     }
 
     public void setX(int x){

@@ -49,7 +49,5 @@ public class Graph extends Canvas {
             g.setColor(Color.black);
             g.drawLine(points.get(i).getX(),points.get(i).getY(),points.get(i+1).getX(),points.get(i+1).getY());
         }
-
-
     }
 }
