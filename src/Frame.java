@@ -16,6 +16,7 @@ public class Frame extends JFrame{
         this.setSize(WIDTH,HEIGHT);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.add(graphicsHandler);
+        this.getContentPane().addMouseListener(new ClickListener());
         this.setVisible(true);
     }
 }

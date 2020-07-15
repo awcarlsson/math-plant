@@ -1,5 +1,6 @@
 package src;
 
+// Stores x and y in cartesian coord system (not cs)
 public class Coordinate {
 
     private int x;
@@ -10,11 +11,11 @@ public class Coordinate {
         this.y = y;
     }
 
-    public static int translateX(int x){
-        return x+Frame.WIDTH/2;
+    public static int displayXtoX(int x){
+        return x-Frame.WIDTH/2;
     }
 
-    public static int translateY(int y){
+    public static int displayYtoY(int y){
         return -y+Frame.HEIGHT/2;
     }
 
