@@ -2,9 +2,9 @@ package src;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-
 import javax.swing.*;
+
+import java.util.ArrayList;
 
 public class GraphicsHandler extends JPanel implements ActionListener {
 
@@ -50,24 +50,8 @@ public class GraphicsHandler extends JPanel implements ActionListener {
         } 
     
         // Plant
-        if(planted){
-            ArrayList<PlantNode> nodes = p.getPlant();
-            for(int i = 0; i < nodes.size(); i++){
-                if(nodes.get(i).getY() < 0)
-                    g2d.setColor(Color.WHITE);
-                else
-                    g2d.setColor(Color.GREEN);
-                if(i > 0){
-                    Stroke stroke = new BasicStroke(6f);
-                    g2d.setStroke(stroke);
-                    g2d.drawLine(nodes.get(i).getDisplayX(), nodes.get(i).getDisplayY(), nodes.get(i-1).getDisplayX(), nodes.get(i-1).getDisplayY());
-                }
-                if (i == 0) {
-                    g2d.setColor(new Color(79, 37, 2));
-                    g2d.fillOval(nodes.get(i).getDisplayX()-10, nodes.get(i).getDisplayY()-10, 20, 20);
-                }
-            }
-        }
+        if(planted)
+            p.paintPlant(g2d);
     }
 
     // Logic for on screen elements, performed each tick
