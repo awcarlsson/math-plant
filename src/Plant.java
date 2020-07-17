@@ -9,35 +9,44 @@ public class Plant {
     
     private ArrayList<PlantNode> plant;
 
-    // The length of each stem segment
-    private int minStemLength = 1;
-    private int maxStemLength = 4;
+    // Angle to initially grow
+    private double up = Math.PI/2;
+
+    // The length of each stem segment (1 and 4 default)
+    private double minStemLength = 1;
+    private double maxStemLength = 4;
 
     // The angle of each new stem segment is the angle of the old segment + some offset.
     // This offset is equal to a randomly chosen normal distribution around PI/deviationFactor, 
     // where the lower the deviationFactor the larger the new angle.
     // deviationFactor decrements for each new node added and can not go lower than highestDeviation.
-    private int deviationFactor = 100;
+    private int deviationFactor = 50;
     private int highestDeviation = 30;
 
     // Number of plant nodes is random between minHeight and maxHeight
-    private int minHeight = 250;
-    private int maxHeight = 400;
+    private int minHeight = 150;
+    private int maxHeight = 300;
     private int height;
+
+    // If a plant grows this many nodes downwards, it dies
+    private int downToDeath = minHeight/4;
+    private int downCount = 0;
 
     // Probability of a node growing a branch. Increases as plant increases in height
     private int branchProb = 0;
+
+    // Initial color
     private Color currColor = new Color(31, 191, 63);
 
     public Plant() {
         this.plant = new ArrayList<PlantNode>();
-        this.plant.add(new PlantNode(0, 0, Math.PI/2, getGreen()));
+        this.plant.add(new PlantNode(0, 0, up, getGreen()));
         this.height = (int)(Math.random() * (maxHeight - minHeight + 1) + minHeight);
     }
 
     public Plant(int originX, int originY) {
         this.plant = new ArrayList<PlantNode>();
-        this.plant.add(new PlantNode(originX, originY, Math.PI/2, getGreen()));
+        this.plant.add(new PlantNode(originX, originY, up, getGreen()));
         this.height = (int)(Math.random() * (maxHeight - minHeight + 1) + minHeight);
     }
 
@@ -46,16 +55,31 @@ public class Plant {
     }
 
     public void updatePlant(){
-        if(plant.size() <= height){
+        boolean growing = checkIfGrowing();
+        if(growing){
             PlantNode lastNode = plant.get(plant.size()-1);
             double newDirection = getNewDirection(lastNode.getDirection());
-            int lengthOfStem = getStemLength(minStemLength, maxStemLength);
-            PlantNode newNode = new PlantNode((int)(lastNode.getX()+Math.cos(newDirection)*lengthOfStem),
-            (int)(lastNode.getY()+Math.sin(newDirection)*lengthOfStem), newDirection, getGreen());
+            double lengthOfStem = getStemLength(minStemLength, maxStemLength);
+            double newX = lastNode.getX()+Math.cos(newDirection)*lengthOfStem;
+            // Ceiling to bias y upwards
+            double newY = Math.ceil(lastNode.getY()+Math.sin(newDirection)*lengthOfStem);
+            // Prevents casting to int from being biased towards x = 0
+            if (lastNode.getX() < 0 && newX > lastNode.getX()) newX = Math.floor(newX);
+            if (lastNode.getX() > 0 && newX < lastNode.getX()) newX = Math.ceil(newX);
+            if(newY < lastNode.getY()) downCount++; 
+            // else downCount = 0;
+            PlantNode newNode = new PlantNode((int)newX, (int)newY, newDirection, getGreen());
             if(deviationFactor > highestDeviation)
                 deviationFactor--;
             plant.add(newNode);
         }
+    }
+
+    private boolean checkIfGrowing(){
+        if(plant.size() > height || downCount >= downToDeath) {
+            return false;
+        }
+        return true; 
     }
 
     private double getNewDirection(double oldDirection){
@@ -63,11 +87,10 @@ public class Plant {
         double offset = r.nextGaussian() * (Math.PI/deviationFactor);
         if(offset > Math.PI/3) offset = Math.PI/3;
         if(offset < -Math.PI/3) offset = -Math.PI/3;
-        //System.out.println(oldDirection);
         return oldDirection + offset;
     }
 
-    private int getStemLength(int min, int max){
+    private int getStemLength(double min, double max){
         return (int)(Math.random() * (max - min + 1) + min);
     }
 
