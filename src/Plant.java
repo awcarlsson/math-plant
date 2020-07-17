@@ -54,7 +54,7 @@ public class Plant {
         return plant;
     }
 
-    public void updatePlant(){
+    public void updatePlant(Background b){
         boolean growing = checkIfGrowing();
         if(growing){
             PlantNode lastNode = plant.get(plant.size()-1);
@@ -94,9 +94,9 @@ public class Plant {
         return (int)(Math.random() * (max - min + 1) + min);
     }
 
-    public void paintPlant(Graphics2D g) {
+    public void paintPlant(Graphics2D g, Background b) {
         for(int i = 0; i < plant.size(); i++){
-            if(plant.get(i).getY() < 0)
+            if(plant.get(i).getY() < Coordinate.displayYtoY(b.getDirtY()))
                 g.setColor(Color.WHITE);
             else {
                 getGreen();

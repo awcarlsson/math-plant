@@ -14,6 +14,7 @@ public class GraphicsHandler extends JPanel implements ActionListener {
     // TODO: replace with better system
     private ArrayList<Plant> plants = new ArrayList<Plant>();
     private Function f = new Function("Hello", 100);
+    private Background b = new Background(Frame.HEIGHT*3/4);
 
     public GraphicsHandler(){
         timer.start();
@@ -28,22 +29,15 @@ public class GraphicsHandler extends JPanel implements ActionListener {
 
         // DRAW OBJECTS HERE
 
-        // Dirt and sky
-        g2d.setColor(new Color(207, 237, 255));
-        g2d.fillRect(0, 0, Frame.WIDTH, Frame.HEIGHT/2);
-        g2d.setColor(new Color(115, 89, 71));
-        g2d.fillRect(0, Frame.HEIGHT/2, Frame.WIDTH, Frame.HEIGHT);
-
-        g2d.setColor(Color.BLACK);
-        g2d.drawLine(Frame.WIDTH/2,0,Frame.WIDTH/2,Frame.HEIGHT); // y-axis
-        g2d.drawLine(0,Frame.HEIGHT/2,Frame.WIDTH,Frame.HEIGHT/2); // x-axis
+        // Background
+        b.paintBackground(g2d);
 
         // Function
         //f.paintFunction(g2d);
     
         // Plant
         for (Plant p : plants)
-            p.paintPlant(g2d);
+            p.paintPlant(g2d, b);
     }
 
     // Logic for on screen elements, performed each tick
@@ -57,7 +51,7 @@ public class GraphicsHandler extends JPanel implements ActionListener {
 
         if(plants.size() > 0)
             for (Plant p : plants){
-                p.updatePlant();
+                p.updatePlant(b);
             }
 
         repaint();

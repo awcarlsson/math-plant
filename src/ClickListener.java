@@ -22,7 +22,6 @@ public class ClickListener implements MouseListener{
 
     @Override
     public void mousePressed(MouseEvent e) {
-        System.out.println("planted!");
         p = new Plant(Coordinate.displayXtoX(e.getX()), Coordinate.displayYtoY(e.getY()));
         newPlant = true;
     }
