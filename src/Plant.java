@@ -8,20 +8,37 @@ import java.util.Random;
 public class Plant {
     
     private ArrayList<PlantNode> plant;
-    private double minStemLength = 1.0;
-    private double maxStemLength = 5.0;
-    private int deviationFactor = 75;
-    private int highestDeviation = 8;
+
+    // The length of each stem segment
+    private int minStemLength = 1;
+    private int maxStemLength = 4;
+
+    // The angle of each new stem segment is the angle of the old segment + some offset.
+    // This offset is equal to a randomly chosen normal distribution around PI/deviationFactor, 
+    // where the lower the deviationFactor the larger the new angle.
+    // deviationFactor decrements for each new node added and can not go lower than highestDeviation.
+    private int deviationFactor = 100;
+    private int highestDeviation = 30;
+
+    // Number of plant nodes is random between minHeight and maxHeight
+    private int minHeight = 250;
+    private int maxHeight = 400;
+    private int height;
+
+    // Probability of a node growing a branch. Increases as plant increases in height
+    private int branchProb = 0;
     private Color currColor = new Color(31, 191, 63);
 
     public Plant() {
         this.plant = new ArrayList<PlantNode>();
         this.plant.add(new PlantNode(0, 0, Math.PI/2, getGreen()));
+        this.height = (int)(Math.random() * (maxHeight - minHeight + 1) + minHeight);
     }
 
     public Plant(int originX, int originY) {
         this.plant = new ArrayList<PlantNode>();
         this.plant.add(new PlantNode(originX, originY, Math.PI/2, getGreen()));
+        this.height = (int)(Math.random() * (maxHeight - minHeight + 1) + minHeight);
     }
 
     public ArrayList<PlantNode> getPlant() {
@@ -29,14 +46,16 @@ public class Plant {
     }
 
     public void updatePlant(){
-        PlantNode lastNode = plant.get(plant.size()-1);
-        double newDirection = getNewDirection(lastNode.getDirection());
-        double lengthOfStem = getStemLength(minStemLength, maxStemLength);
-        PlantNode newNode = new PlantNode((int)(lastNode.getX()+Math.cos(newDirection)*lengthOfStem),
-        (int)(lastNode.getY()+Math.sin(newDirection)*lengthOfStem), newDirection, getGreen());
-        if(deviationFactor > highestDeviation);
-            deviationFactor--;
-        plant.add(newNode);
+        if(plant.size() <= height){
+            PlantNode lastNode = plant.get(plant.size()-1);
+            double newDirection = getNewDirection(lastNode.getDirection());
+            int lengthOfStem = getStemLength(minStemLength, maxStemLength);
+            PlantNode newNode = new PlantNode((int)(lastNode.getX()+Math.cos(newDirection)*lengthOfStem),
+            (int)(lastNode.getY()+Math.sin(newDirection)*lengthOfStem), newDirection, getGreen());
+            if(deviationFactor > highestDeviation)
+                deviationFactor--;
+            plant.add(newNode);
+        }
     }
 
     private double getNewDirection(double oldDirection){
@@ -44,11 +63,12 @@ public class Plant {
         double offset = r.nextGaussian() * (Math.PI/deviationFactor);
         if(offset > Math.PI/3) offset = Math.PI/3;
         if(offset < -Math.PI/3) offset = -Math.PI/3;
+        //System.out.println(oldDirection);
         return oldDirection + offset;
     }
 
-    private double getStemLength(double min, double max){
-        return (Math.random() * (max - min + 1) + min);
+    private int getStemLength(int min, int max){
+        return (int)(Math.random() * (max - min + 1) + min);
     }
 
     public void paintPlant(Graphics2D g) {

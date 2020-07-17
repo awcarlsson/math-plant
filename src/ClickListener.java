@@ -5,6 +5,7 @@ import java.awt.event.MouseListener;
 
 public class ClickListener implements MouseListener{
 
+    private static boolean newPlant = false;
     private static Plant p = null;
 
     @Override
@@ -12,12 +13,18 @@ public class ClickListener implements MouseListener{
     }
 
     public static Plant seedPlanted(){
-        return p;
+        if(newPlant) {
+            newPlant = false;
+            return p;
+        } else
+            return null;
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
+        System.out.println("planted!");
         p = new Plant(Coordinate.displayXtoX(e.getX()), Coordinate.displayYtoY(e.getY()));
+        newPlant = true;
     }
 
     @Override
