@@ -2,6 +2,7 @@ package src;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.*;
 
 public class ClickListener implements MouseListener{
 

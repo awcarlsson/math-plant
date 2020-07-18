@@ -1,20 +1,27 @@
 package src;
 
 import java.awt.Color;
-import java.util.ArrayList;
 
 public class PlantNode {
     
     private Coordinate coord;
     private double direction;
     private Color color;
-    private ArrayList<PlantNode> branch;
+    private Plant branch;
 
-    public PlantNode(int x, int y, double direction, Color color) {
+    public PlantNode(int x, int y, double direction, Color color, double branchProb, double maxBranchProb) {
         this.coord = new Coordinate(x, y);
         this.direction = direction;
         this.color = color;
-        this.branch = null;
+        this.branch = createBranch(branchProb, maxBranchProb);
+    }
+
+    private Plant createBranch(double branchProb, double maxBranchProb) {
+        if(Math.random() < branchProb){
+            double branchDir = Plant.getNewDirection(direction, 4);
+            return new Plant(coord.getX(), coord.getY(), branchDir, 1, 4, 30, 10, 50, 200, 100, 0, maxBranchProb - 0.01, color, false);
+        }
+        return null;
     }
 
     public int getX(){
@@ -37,7 +44,7 @@ public class PlantNode {
         return direction;
     }
 
-    public ArrayList<PlantNode> getBranch(){
+    public Plant getBranch(){
         return branch;
     }
 

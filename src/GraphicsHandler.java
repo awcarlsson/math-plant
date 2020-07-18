@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class GraphicsHandler extends JPanel implements ActionListener {
 
-    private Timer timer = new Timer(32, this); // Number of milliseconds for each update (16 = 60 fps)
+    private Timer timer = new Timer(32, this); // Number of milliseconds for each update (32 = 30 fps)
 
     // Global objects in scene
     // TODO: replace with better system
