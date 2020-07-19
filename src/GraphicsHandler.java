@@ -6,6 +6,9 @@ import javax.swing.*;
 
 import java.util.ArrayList;
 
+/**
+ * Handles the updating and painting of objects to the graphics window
+ */
 public class GraphicsHandler extends JPanel implements ActionListener {
 
     private Timer timer = new Timer(32, this); // Number of milliseconds for each update (32 = 30 fps)
@@ -16,12 +19,12 @@ public class GraphicsHandler extends JPanel implements ActionListener {
     private Function f = new Function("Hello", 100);
     private Background b = new Background(Frame.HEIGHT*3/4);
 
-    public GraphicsHandler(){
+    public GraphicsHandler() {
         timer.start();
     }
 
     // Paints all elements to the screen
-    public void paintComponent(Graphics g){
+    public void paintComponent(Graphics g) {
 
         super.paintComponent(g);
         this.setBackground(Color.WHITE);
@@ -44,15 +47,13 @@ public class GraphicsHandler extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        Plant plant = ClickListener.seedPlanted();
+        Plant plant = ClickListener.seedPlanted(b);
         if(plant != null){
             plants.add(plant);
         }
 
-        if(plants.size() > 0)
-            for (Plant p : plants){
-                p.updatePlant(b);
-            }
+        for (Plant p : plants)
+            p.updatePlant(b);
 
         repaint();
     }

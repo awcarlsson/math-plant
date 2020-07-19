@@ -2,7 +2,10 @@ package src;
 
 import javax.swing.JFrame;
 
-public class Frame extends JFrame{
+/**
+ * The frame in which all graphics appear
+ */
+public class Frame extends JFrame {
     
     public static final double ASPECT_RATIO = 16D/9D;
     public static final int WIDTH = 1200;

@@ -2,6 +2,9 @@ package src;
 
 import java.awt.*;
 
+/**
+ * Represents the background of the scene, most importantly stores the soil boundary
+ */
 public class Background {
 
     private int dirtY;

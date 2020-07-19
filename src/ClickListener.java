@@ -8,13 +8,14 @@ public class ClickListener implements MouseListener{
 
     private static boolean newPlant = false;
     private static Plant p = null;
+    private static int y;
 
     @Override
     public void mouseClicked(MouseEvent e) {
     }
 
-    public static Plant seedPlanted(){
-        if(newPlant) {
+    public static Plant seedPlanted(Background b){
+        if(newPlant && y >= b.getDirtY()) {
             newPlant = false;
             return p;
         } else
@@ -23,6 +24,7 @@ public class ClickListener implements MouseListener{
 
     @Override
     public void mousePressed(MouseEvent e) {
+        y = e.getY();
         p = new Plant(Coordinate.displayXtoX(e.getX()), Coordinate.displayYtoY(e.getY()));
         newPlant = true;
     }
@@ -38,5 +40,4 @@ public class ClickListener implements MouseListener{
     @Override
     public void mouseExited(MouseEvent e) {
     }
-    
 }

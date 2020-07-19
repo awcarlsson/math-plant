@@ -1,6 +1,8 @@
 package src;
 
-// Stores x and y in cartesian coord system (not cs)
+/**
+ * A coordinate with x and y in cartesian coord system (not CS)
+ */
 public class Coordinate {
 
     private int x;
