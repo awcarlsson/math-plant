@@ -19,6 +19,7 @@ public class GraphicsHandler extends JPanel implements ActionListener {
     private ArrayList<Plant> plants = new ArrayList<Plant>();
     private Function f = new Function("Hello", 500);
     private Background b = new Background(Frame.HEIGHT*3/4);
+    private Light l = new Light(Math.PI/3, 150, 50);
 
     public GraphicsHandler() {
         timer.start();
@@ -40,8 +41,10 @@ public class GraphicsHandler extends JPanel implements ActionListener {
         //f.paintFunction(g2d);
 
         // Plant
-        for (Plant p : plants)
-            p.paintPlant(g2d, b);
+        for (Plant p : plants) p.paintPlant(g2d, b);
+
+        // Light
+        l.paintLight(g2d);
     }
 
     // Logic for on screen elements, performed each tick
