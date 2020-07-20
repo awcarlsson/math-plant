@@ -11,35 +11,32 @@ public class Leaf {
     private int height;
     private double direction;
     private Color color;
+    private double scale;
 
     public Leaf(Coordinate coord, int width, int height, double direction, Color color) {
         this.coord = coord;
         this.width = width;
         this.height = height;
-        this.direction = getNewDirection();
+        this.direction = getNewDirection(direction);
         this.color = color;
+        this.scale = 0.1;
     }
 
     public void paintLeaf(Graphics2D g, Background b) {
-        if(coord.getDisplayY() < b.getDirtY()) {
-            AffineTransform old = g.getTransform();
-            g.translate(coord.getDisplayX(), coord.getDisplayY()+height/2);
-            g.rotate(direction);
-            g.translate(-coord.getDisplayX(), -(coord.getDisplayY()+height/2));
-            g.setColor(color);
-            g.fillOval(coord.getDisplayX(), coord.getDisplayY(), width, height);
-            g.setTransform(old);
-        }
+        AffineTransform old = g.getTransform();
+        g.translate(coord.getDisplayX(), coord.getDisplayY());
+        g.rotate(direction);
+        g.translate(-coord.getDisplayX(), -(coord.getDisplayY()));
+        g.setColor(color);
+        g.fillOval(coord.getDisplayX(), coord.getDisplayY()-(int)(height*scale), (int)(width*scale), (int)(height*scale));
+        if(scale <= 1) scale += 0.1;
+        g.setTransform(old);
     }
 
-    private double getNewDirection() {
-        /**
-        Random r = new Random();
-        double offset = r.nextGaussian() * (Math.PI/deviationFactor);
-        if(offset > Math.PI/2) offset = Math.PI/2;
-        if(offset < -Math.PI/2) offset = -Math.PI/2;
-        return oldDirection + offset;
-        */
+    private double getNewDirection(double oldDirection) {
+        //Random r = new Random();
+        //double offset = r.nextGaussian() * (Math.PI/4);
+        //return oldDirection + offset;
         return Math.random() * 2 * Math.PI;
     }
 }

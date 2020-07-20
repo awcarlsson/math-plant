@@ -12,6 +12,8 @@ public class Plant {
     
     private ArrayList<PlantNode> plant;
 
+    private boolean growing = true;
+
     // The length of each stem segment
     private double minStemLength;
     private double maxStemLength;
@@ -39,6 +41,7 @@ public class Plant {
 
     // Probability of a node growing a leaf
     private double leafProb;
+    private double maxLeafProb;
 
     // Initial color
     private Color currColor;
@@ -47,12 +50,13 @@ public class Plant {
     private boolean og;
 
     public Plant(int originX, int originY) {
-        this(originX, originY, Math.PI/2, 1, 4, 50, 30, 100, 200, 25, false, 0, 0.03, 0.03, new Color(31, 191, 63), true);
+        this(originX, originY, Math.PI/2, 1, 4, 50, 30, 100, 200, 25, false, 0, 0.04, 0, 0.08, new Color(31, 191, 63), true);
     }
 
     public Plant(int originX, int originY, double up, double minStemLength, double maxStemLength, 
-    int deviationFactor, int highestDeviation, int minHeight, int maxHeight, 
-    int downToDeath, boolean leftSoil, double branchProb, double maxBranchProb, double leafProb, Color currColor, boolean og) {
+            int deviationFactor, int highestDeviation, int minHeight, int maxHeight, int downToDeath, 
+            boolean leftSoil, double branchProb, double maxBranchProb, double leafProb, double maxLeafProb,
+            Color currColor, boolean og) {
         this.plant = new ArrayList<PlantNode>();
         this.minStemLength = minStemLength;
         this.maxStemLength = maxStemLength;
@@ -64,8 +68,9 @@ public class Plant {
         this.branchProb = branchProb;
         this.maxBranchProb = maxBranchProb;
         this.leafProb = leafProb;
+        this.maxLeafProb = maxLeafProb;
         this.currColor = currColor;
-        this.plant.add(new PlantNode(originX, originY, up, getGreen(), branchProb, maxBranchProb, leafProb, height));
+        this.plant.add(new PlantNode(originX, originY, up, getGreen(), branchProb, maxBranchProb, leafProb, maxLeafProb, height));
         this.og = og;
     }
 
@@ -83,8 +88,7 @@ public class Plant {
             }
         }
         // Plant grows if it is not at he max height and hasn't grown too far downwards
-        boolean growing = true;
-        if(plant.size() > height || downCount >= downToDeath) {
+        if(growing && (plant.size() > height || downCount >= downToDeath)) {
             growing = false;
         }
         if(growing){
@@ -107,10 +111,12 @@ public class Plant {
             }
             if(growing) {
                 double newBranchProb = branchProb;
-                if(leftSoil == false) newBranchProb = 0;
-                PlantNode newNode = new PlantNode((int)newX, (int)newY, newDirection, getGreen(), newBranchProb, maxBranchProb, leafProb, height);
+                double newLeafProb = leafProb;
+                if(leftSoil == false) newBranchProb = newLeafProb = 0;
+                PlantNode newNode = new PlantNode((int)newX, (int)newY, newDirection, getGreen(), newBranchProb, maxBranchProb, newLeafProb, maxLeafProb, height);
                 if(deviationFactor > highestDeviation && leftSoil) deviationFactor--;
                 if(branchProb <= maxBranchProb && leftSoil) branchProb += 0.0005;
+                if(leafProb <= maxLeafProb && leftSoil) leafProb += 0.001;
                 plant.add(newNode);
             }
         }

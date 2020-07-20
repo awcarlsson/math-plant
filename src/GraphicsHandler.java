@@ -38,7 +38,7 @@ public class GraphicsHandler extends JPanel implements ActionListener {
 
         // Function
         //f.paintFunction(g2d);
-        
+
         // Plant
         for (Plant p : plants)
             p.paintPlant(g2d, b);
