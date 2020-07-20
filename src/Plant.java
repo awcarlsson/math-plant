@@ -37,6 +37,9 @@ public class Plant {
     private double branchProb;
     private double maxBranchProb;
 
+    // Probability of a node growing a leaf
+    private double leafProb;
+
     // Initial color
     private Color currColor;
 
@@ -44,12 +47,12 @@ public class Plant {
     private boolean og;
 
     public Plant(int originX, int originY) {
-        this(originX, originY, Math.PI/2, 1, 4, 50, 30, 150, 250, 150/4, false, 0, 0.03, new Color(31, 191, 63), true);
+        this(originX, originY, Math.PI/2, 1, 4, 50, 30, 100, 200, 25, false, 0, 0.03, 0.03, new Color(31, 191, 63), true);
     }
 
     public Plant(int originX, int originY, double up, double minStemLength, double maxStemLength, 
     int deviationFactor, int highestDeviation, int minHeight, int maxHeight, 
-    int downToDeath, boolean leftSoil, double branchProb, double maxBranchProb, Color currColor, boolean og) {
+    int downToDeath, boolean leftSoil, double branchProb, double maxBranchProb, double leafProb, Color currColor, boolean og) {
         this.plant = new ArrayList<PlantNode>();
         this.minStemLength = minStemLength;
         this.maxStemLength = maxStemLength;
@@ -60,8 +63,9 @@ public class Plant {
         this.leftSoil = leftSoil;
         this.branchProb = branchProb;
         this.maxBranchProb = maxBranchProb;
+        this.leafProb = leafProb;
         this.currColor = currColor;
-        this.plant.add(new PlantNode(originX, originY, up, getGreen(), branchProb, maxBranchProb, height));
+        this.plant.add(new PlantNode(originX, originY, up, getGreen(), branchProb, maxBranchProb, leafProb, height));
         this.og = og;
     }
 
@@ -104,7 +108,7 @@ public class Plant {
             if(growing) {
                 double newBranchProb = branchProb;
                 if(leftSoil == false) newBranchProb = 0;
-                PlantNode newNode = new PlantNode((int)newX, (int)newY, newDirection, getGreen(), newBranchProb, maxBranchProb, height);
+                PlantNode newNode = new PlantNode((int)newX, (int)newY, newDirection, getGreen(), newBranchProb, maxBranchProb, leafProb, height);
                 if(deviationFactor > highestDeviation && leftSoil) deviationFactor--;
                 if(branchProb <= maxBranchProb && leftSoil) branchProb += 0.0005;
                 plant.add(newNode);
@@ -133,6 +137,9 @@ public class Plant {
             // Get the branch (if it exists) from this plant node and paint it
             Plant branch = plant.get(i).getBranch();
             if(branch != null) branch.paintPlant(g, b);
+            // Get the leaf (if it exists) from this plant node and paint it
+            Leaf leaf = plant.get(i).getLeaf();
+            if(leaf != null) leaf.paintLeaf(g, b);
             // Paint own stem
             if(plant.get(i).getY() < Coordinate.displayYtoY(b.getDirtY())) g.setColor(Color.WHITE);
             else {
@@ -140,7 +147,7 @@ public class Plant {
                 g.setColor(plant.get(i).getColor());
             }
             if(i > 0){
-                Stroke stroke = new BasicStroke(6f);
+                Stroke stroke = new BasicStroke(6f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
                 g.setStroke(stroke);
                 g.drawLine(plant.get(i).getDisplayX(), plant.get(i).getDisplayY(), plant.get(i-1).getDisplayX(), plant.get(i-1).getDisplayY());
             }

@@ -1,6 +1,7 @@
 package src;
 
 import java.awt.*;
+import java.awt.geom.*;
 import java.awt.event.*;
 import javax.swing.*;
 
@@ -16,7 +17,7 @@ public class GraphicsHandler extends JPanel implements ActionListener {
     // Global objects in scene
     // TODO: replace with better system
     private ArrayList<Plant> plants = new ArrayList<Plant>();
-    private Function f = new Function("Hello", 100);
+    private Function f = new Function("Hello", 500);
     private Background b = new Background(Frame.HEIGHT*3/4);
 
     public GraphicsHandler() {
@@ -37,7 +38,7 @@ public class GraphicsHandler extends JPanel implements ActionListener {
 
         // Function
         //f.paintFunction(g2d);
-    
+        
         // Plant
         for (Plant p : plants)
             p.paintPlant(g2d, b);

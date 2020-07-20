@@ -21,6 +21,14 @@ public class Coordinate {
         return -y+Frame.HEIGHT/2;
     }
 
+    public static int xToDisplayX(int x){
+        return x+Frame.WIDTH/2;
+    }
+
+    public static int yToDisplayY(int y){
+        return -y+Frame.HEIGHT/2;
+    }
+
     public int getX(){
         return x;
     }
