@@ -16,10 +16,10 @@ public class GraphicsHandler extends JPanel implements ActionListener {
 
     // Global objects in scene
     // TODO: replace with better system
-    private ArrayList<Plant> plants = new ArrayList<Plant>();
+    private static ArrayList<Plant> plants = new ArrayList<Plant>();
     private Function f = new Function("Hello", 500);
     private Background b = new Background(Frame.HEIGHT*3/4);
-    private Light l = new Light(Math.PI/3, 150, 50);
+    private Light l = new Light(0, 300, 50);
 
     public GraphicsHandler() {
         timer.start();
@@ -51,7 +51,7 @@ public class GraphicsHandler extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        Plant plant = ClickListener.seedPlanted(b);
+        Plant plant = PlantListener.seedPlanted(b);
         if(plant != null){
             plants.add(plant);
         }
@@ -60,5 +60,9 @@ public class GraphicsHandler extends JPanel implements ActionListener {
             p.updatePlant(b);
 
         repaint();
+    }
+
+    public void reset(){
+        plants = new ArrayList<Plant>();
     }
 }
