@@ -70,7 +70,7 @@ public class Plant {
         this.leafProb = leafProb;
         this.maxLeafProb = maxLeafProb;
         this.currColor = currColor;
-        this.plant.add(new PlantNode(originX, originY, up, getGreen(), branchProb, maxBranchProb, leafProb, maxLeafProb, height));
+        this.plant.add(new PlantNode(originX, originY, up, getGreen(), branchProb, maxBranchProb, leafProb, maxLeafProb, height, og));
         this.og = og;
     }
 
@@ -80,13 +80,7 @@ public class Plant {
 
     // Handles the generation of a new PlantNode and the updating of all previously created branches
     public void updatePlant(Background b){
-        // Updates all branches of the plant
-        for (PlantNode pn : plant){
-            Plant branch = pn.getBranch();
-            if(branch != null){
-                branch.updatePlant(b);
-            }
-        }
+        updateBranches(b);
         // Plant grows if it is not at he max height and hasn't grown too far downwards
         if(growing && (plant.size() > height || downCount >= downToDeath)) {
             growing = false;
@@ -112,12 +106,23 @@ public class Plant {
             if(growing) {
                 double newBranchProb = branchProb;
                 double newLeafProb = leafProb;
-                if(leftSoil == false) newBranchProb = newLeafProb = 0;
-                PlantNode newNode = new PlantNode((int)newX, (int)newY, newDirection, getGreen(), newBranchProb, maxBranchProb, newLeafProb, maxLeafProb, height);
+                if(leftSoil == false && lastNode.isRoot() == false) newBranchProb = newLeafProb = 0;
+                PlantNode newNode = new PlantNode((int)newX, (int)newY, newDirection, getGreen(), newBranchProb, maxBranchProb, newLeafProb, maxLeafProb, height, false);
+                if(lastNode.isRoot()) newNode = new PlantNode((int)newX, (int)newY, newDirection, getGreen(), newBranchProb, maxBranchProb, 0, 0, height, false);
                 if(deviationFactor > highestDeviation && leftSoil) deviationFactor--;
                 if(branchProb <= maxBranchProb && leftSoil) branchProb += 0.0005;
                 if(leafProb <= maxLeafProb && leftSoil) leafProb += 0.001;
                 plant.add(newNode);
+            }
+        }
+    }
+
+    // Updates all branches of the plant
+    private void updateBranches(Background b){
+        for (PlantNode pn : plant){
+            Plant branch = pn.getBranch();
+            if(branch != null){
+                branch.updatePlant(b);
             }
         }
     }

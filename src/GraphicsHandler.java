@@ -29,7 +29,7 @@ public class GraphicsHandler extends JPanel implements ActionListener {
     public void paintComponent(Graphics g) {
 
         super.paintComponent(g);
-        this.setBackground(Color.WHITE);
+        this.setBackground(new Color(207, 237, 255));
         Graphics2D g2d = (Graphics2D) g;
 
         // DRAW OBJECTS HERE

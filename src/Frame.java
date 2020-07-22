@@ -2,6 +2,9 @@ package src;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.plaf.ButtonUI;
+import javax.swing.plaf.basic.BasicButtonUI;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -20,14 +23,23 @@ public class Frame extends JFrame {
     public Frame() {
         this.setName(NAME);
         this.setSize(WIDTH, HEIGHT);
+        this.setMinimumSize(new Dimension(WIDTH, HEIGHT));
+        this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        this.setMaximumSize(new Dimension(WIDTH, HEIGHT));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.add(graphicsHandler);
         graphicsHandler.setLayout(null);
-        JButton reset = new JButton("Reset");
+        JButton reset = new JButton("reset");
+        reset.setUI((ButtonUI) BasicButtonUI.createUI(reset));
+        reset.setForeground(new Color(255, 255, 255));
+        reset.setMargin(new Insets(0,0,0,0));
+        reset.setContentAreaFilled(false);      
+        reset.setFont(new Font("Helvetica Neue", Font.BOLD, 32));
+        reset.setFocusPainted(false);
         reset.addActionListener(new Reset());
+        reset.setSize(120, 30);
+        reset.setLocation(20, 40);
         graphicsHandler.add(reset);
-        reset.setSize(100, 100);
-        reset.setLocation(40, HEIGHT - 150);
         this.getContentPane().addMouseListener(new PlantListener());
         this.setVisible(true);
     }

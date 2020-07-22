@@ -17,7 +17,7 @@ public class Light {
     }
 
     public void paintLight(Graphics2D g){
-        g.setColor(Color.YELLOW);
+        g.setColor(new Color(255, 245, 171));
         this.coord.setX((int)(Math.cos(originAngle)*distanceFromOrigin));
         this.coord.setY((int)(Math.sin(originAngle)*distanceFromOrigin));
         g.fillOval(this.coord.getDisplayX()-radius/2, this.coord.getDisplayY()-radius/2, radius, radius);

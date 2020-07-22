@@ -12,13 +12,15 @@ public class PlantNode {
     private Color color;
     private Plant branch;
     private Leaf leaf;
+    private boolean root = false;
 
     public PlantNode(int x, int y, double direction, Color color, double branchProb, double maxBranchProb, 
-            double leafProb, double maxLeafProb, int height) {
+            double leafProb, double maxLeafProb, int height, boolean og) {
         this.coord = new Coordinate(x, y);
         this.direction = direction;
         this.color = color;
-        this.branch = createBranch(branchProb, maxBranchProb, maxLeafProb, height);
+        if (og) this.branch = createRoot();
+        else this.branch = createBranch(branchProb, maxBranchProb, maxLeafProb, height);
         this.leaf = createLeaf(leafProb);
     }
 
@@ -30,6 +32,12 @@ public class PlantNode {
             return new Plant(coord.getX(), coord.getY(), branchDir, 1, 4, 30, 10, height/5, height/2, 30, true, 0, maxBranchProb - 0.01, 0.05, maxLeafProb + 0.01, color, false);
         }
         return null;
+    }
+
+    private Plant createRoot() {
+        double down = direction + Math.PI;
+        root = true;
+        return new Plant(coord.getX(), coord.getY(), down, 1, 4, 20, 20, 20, 60, 40, false, 0.02, 0.1, 0, 0, color, false);
     }
 
     private Leaf createLeaf(double leafProb) {
@@ -69,5 +77,9 @@ public class PlantNode {
 
     public Color getColor(){
         return color;
+    }
+
+    public boolean isRoot(){
+        return root;
     }
 }
