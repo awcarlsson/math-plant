@@ -99,14 +99,13 @@ public class Plant {
                 double newBranchProb = branchProb;
                 double newLeafProb = leafProb;
                 if(leftSoil == false && !root) newBranchProb = newLeafProb = 0;
-                PlantNode newNode = new PlantNode(newCoord, newDir, getGreen(), newBranchProb, maxBranchProb - 0.01, newLeafProb, maxLeafProb + 0.01, height, false);
+                PlantNode newNode = new PlantNode(newCoord, newDir, getGreen(), 
+                        newBranchProb, maxBranchProb - 0.01, newLeafProb, maxLeafProb + 0.01, height, false);
                 if(root) newNode = new PlantNode(newCoord, newDir, getGreen(), newBranchProb, maxBranchProb, 0, 0, height, true);
-                if(devFactor > highestDev && leftSoil && !root) devFactor--;
-                if(devFactor > highestDev && root) devFactor--;
-                if(branchProb <= maxBranchProb && leftSoil && !root) branchProb += branchDelt;
-                if(branchProb <= maxBranchProb && root) branchProb += branchDelt;
-                if(leafProb <= maxLeafProb && leftSoil) leafProb += leafDelt;
                 plant.add(newNode);
+                if((devFactor > highestDev && leftSoil && !root) || (devFactor > highestDev && root)) devFactor--;
+                if((branchProb <= maxBranchProb && leftSoil && !root) || (branchProb <= maxBranchProb && root)) branchProb += branchDelt;
+                if(leafProb <= maxLeafProb && leftSoil) leafProb += leafDelt;
             }
         }
     }
@@ -170,11 +169,11 @@ public class Plant {
     // Gets a new shade of green by adding some random offset to the current shade
     private Color getGreen(){
         float hOff = (float)((Math.random() * 0.005) - 0.0025), 
-        sOff = (float)((Math.random() * 0.005) - 0.0025),
-        bOff = (float)((Math.random() * 0.005) - 0.0025);
+                sOff = (float)((Math.random() * 0.005) - 0.0025), 
+                bOff = (float)((Math.random() * 0.005) - 0.0025);
         float[] currHSB = Color.RGBtoHSB(currColor.getRed(), currColor.getGreen(), currColor.getBlue(), null);
-        // HSB ranges
-        // hue: [79, 143] 
+        // HSB ranges for green:
+        // hue: [79, 143]
         // saturation: [0.3, 1]
         // brightness: [0.33, 0.75]
         float h = currHSB[0] + hOff;
