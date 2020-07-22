@@ -1,7 +1,7 @@
 package src;
 
 /**
- * A coordinate with x and y in cartesian coord system (not CS)
+ * A coordinate with x and y in cartesian coord system (not from top)
  */
 public class Coordinate {
 

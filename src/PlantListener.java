@@ -3,6 +3,9 @@ package src;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+/**
+ * Handles users clicking on the soil to plant a seed
+ */
 public class PlantListener implements MouseListener{
 
     private static boolean newPlant = false;
@@ -24,7 +27,7 @@ public class PlantListener implements MouseListener{
     @Override
     public void mousePressed(MouseEvent e) {
         y = e.getY();
-        p = new Plant(Coordinate.displayXtoX(e.getX()), Coordinate.displayYtoY(e.getY()));
+        p = new Plant(new Coordinate(Coordinate.displayXtoX(e.getX()), Coordinate.displayYtoY(e.getY())));
         newPlant = true;
     }
 

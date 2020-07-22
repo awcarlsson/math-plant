@@ -1,25 +1,23 @@
 package src;
 
 import java.awt.*;
-import java.awt.geom.*;
 import java.awt.event.*;
 import javax.swing.*;
 
 import java.util.ArrayList;
 
 /**
- * Handles the updating and painting of objects to the graphics window
+ * Handles the updating and painting of objects to the graphics window.
  */
 public class GraphicsHandler extends JPanel implements ActionListener {
 
     private Timer timer = new Timer(32, this); // Number of milliseconds for each update (32 = 30 fps)
 
     // Global objects in scene
-    // TODO: replace with better system
     private static ArrayList<Plant> plants = new ArrayList<Plant>();
-    private Function f = new Function("Hello", 500);
-    private Background b = new Background(Frame.HEIGHT*3/4);
-    private Light l = new Light(0, 300, 50);
+    private static Function f = new Function("Hello", 500);
+    private static Background b = new Background(Frame.HEIGHT*3/4);
+    private static Light l = new Light(0, 300, 50);
 
     public GraphicsHandler() {
         timer.start();
@@ -51,13 +49,10 @@ public class GraphicsHandler extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
+        // Check if a user has planted a plant
         Plant plant = PlantListener.seedPlanted(b);
-        if(plant != null){
-            plants.add(plant);
-        }
-
-        for (Plant p : plants)
-            p.updatePlant(b);
+        if(plant != null) plants.add(plant);
+        for (Plant p : plants) p.updatePlant(b);
 
         repaint();
     }

@@ -12,37 +12,33 @@ public class PlantNode {
     private Color color;
     private Plant branch;
     private Leaf leaf;
-    private boolean root = false;
 
-    public PlantNode(int x, int y, double direction, Color color, double branchProb, double maxBranchProb, 
-            double leafProb, double maxLeafProb, int height, boolean og) {
-        this.coord = new Coordinate(x, y);
+    public PlantNode(Coordinate coord, double direction, Color color, double branchProb, double maxBranchProb, 
+            double leafProb, double maxLeafProb, int height, boolean root) {
+        this.coord = coord;
         this.direction = direction;
         this.color = color;
-        if (og) this.branch = createRoot();
-        else this.branch = createBranch(branchProb, maxBranchProb, maxLeafProb, height);
+        this.branch = createBranch(branchProb, maxBranchProb, maxLeafProb, height, root);
         this.leaf = createLeaf(leafProb);
     }
 
     // Some probability for a new branch to spawn
-    private Plant createBranch(double branchProb, double maxBranchProb, double maxLeafProb, int height) {
-        if(Math.random() < branchProb){
+    private Plant createBranch(double branchProb, double maxBranchProb, double maxLeafProb, int height, boolean root) {
+        if(Math.random() < branchProb) {
             double branchDir = Plant.getNewDirection(direction, 4);
-            // TODO: replace x and y with coord
-            return new Plant(coord.getX(), coord.getY(), branchDir, 1, 4, 30, 10, height/5, height/2, 30, true, 0, maxBranchProb - 0.01, 0.05, maxLeafProb + 0.01, color, false);
+            if(root) return new Plant(coord, branchDir, 10, 5, height/5, height/2, false, 0, maxBranchProb, 0, 0, color, false, true);
+            return new Plant(coord, branchDir, 30, 10, height/5, height/2, true, 0, maxBranchProb, 0.05, maxLeafProb, color, false, false);
         }
         return null;
     }
 
-    private Plant createRoot() {
-        double down = direction + Math.PI;
-        root = true;
-        return new Plant(coord.getX(), coord.getY(), down, 1, 4, 20, 20, 20, 60, 40, false, 0.02, 0.1, 0, 0, color, false);
+    public void setBranch(Plant branch){
+        this.branch = branch;
     }
 
     private Leaf createLeaf(double leafProb) {
         if(Math.random() < leafProb){
-            return new Leaf(new Coordinate(coord.getX(), coord.getY()), 30, 10, 0, color);
+            return new Leaf(new Coordinate(coord.getX(), coord.getY()), 0, color);
         }
         return null;
     }
@@ -77,9 +73,5 @@ public class PlantNode {
 
     public Color getColor(){
         return color;
-    }
-
-    public boolean isRoot(){
-        return root;
     }
 }

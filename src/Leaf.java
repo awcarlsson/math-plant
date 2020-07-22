@@ -2,21 +2,19 @@ package src;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.util.Random;
 
 public class Leaf {
     
+    private final int WIDTH = 30;
+    private final int HEIGHT = 10;
+
     private Coordinate coord;
-    private int width;
-    private int height;
     private double direction;
     private Color color;
     private double scale;
 
-    public Leaf(Coordinate coord, int width, int height, double direction, Color color) {
+    public Leaf(Coordinate coord, double direction, Color color) {
         this.coord = coord;
-        this.width = width;
-        this.height = height;
         this.direction = getNewDirection(direction);
         this.color = color;
         this.scale = 0.1;
@@ -28,15 +26,13 @@ public class Leaf {
         g.rotate(direction);
         g.translate(-coord.getDisplayX(), -(coord.getDisplayY()));
         g.setColor(color);
-        g.fillOval(coord.getDisplayX(), coord.getDisplayY()-(int)(height*scale), (int)(width*scale), (int)(height*scale));
+        g.fillOval(coord.getDisplayX(), coord.getDisplayY()-(int)(HEIGHT*scale), (int)(WIDTH*scale), (int)(HEIGHT*scale));
         if(scale <= 1) scale += 0.1;
         g.setTransform(old);
     }
 
     private double getNewDirection(double oldDirection) {
-        //Random r = new Random();
-        //double offset = r.nextGaussian() * (Math.PI/4);
-        //return oldDirection + offset;
+        // Maybe use oldDirection, random for now!
         return Math.random() * 2 * Math.PI;
     }
 }
