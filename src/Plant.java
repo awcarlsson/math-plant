@@ -43,12 +43,12 @@ public class Plant {
     // Probability of a node growing a branch (0-1). Increases as plant increases in height
     private double branchProb;
     private double maxBranchProb;
-    private double branchDelt = 0.0005;
+    private double branchDelt = 0.00065;
 
     // Probability of a node growing a leaf
     private double leafProb;
     private double maxLeafProb;
-    private double leafDelt = 0.001;
+    private double leafDelt = 0.0018;
 
     // Initial color
     private Color currColor;
