@@ -5,6 +5,9 @@ import java.io.CharArrayReader;
 import java.lang.Math;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Stack;
 
 /**
@@ -12,6 +15,12 @@ import java.util.Stack;
  */
 public class Function {
 
+    // numerical digits
+    private final Set<Character> digits = new HashSet<>(Arrays.asList('0','1','2','3','4','5','6','7','8','9'));
+
+    // 
+
+    //private final String 
     private String functionString;
     private ArrayList<Coordinate> functionNodes;
 
@@ -30,7 +39,7 @@ public class Function {
         int i = 0;
         while (i < len){
             char token = functionString.charAt(i);
-            if (token in )
+            //if (token 
         }
     }
 
