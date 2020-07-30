@@ -15,7 +15,7 @@ public class GraphicsHandler extends JPanel implements ActionListener {
 
     // Global objects in scene
     private static ArrayList<Plant> plants = new ArrayList<Plant>();
-    private static Function f = new Function("Hello", 500);
+    private static Function f = new Function("", 500);
     private static Background b = new Background(Frame.HEIGHT*3/4);
     private static Light l = new Light(0, 300, 50);
 
@@ -59,5 +59,10 @@ public class GraphicsHandler extends JPanel implements ActionListener {
 
     public void reset(){
         plants = new ArrayList<Plant>();
+    }
+
+    public void updateFunction(String funcString){
+        f.setFunction(funcString);
+        System.out.println(funcString);
     }
 }

@@ -16,7 +16,7 @@ import java.util.Stack;
 public class Function {
 
     // numerical digits
-    private final Set<Character> digits = new HashSet<>(Arrays.asList('0','1','2','3','4','5','6','7','8','9'));
+    private static final Set<Character> DIGITS = new HashSet<>(Arrays.asList('0','1','2','3','4','5','6','7','8','9'));
 
     // 
 
@@ -30,6 +30,9 @@ public class Function {
         createFunctionTree(nodeNumber);
     }
 
+    public void setFunction(String functionString) {
+        this.functionString = functionString;
+    }
 
     // parses a function and converts into RPN using the Shunting-Yard algorithm
     private void parseFunctionString(String functionString){
@@ -53,7 +56,6 @@ public class Function {
             functionNodes.add(new Coordinate(i, (int)(y)));
             count ++;
         }
-
     }
 
     public void paintFunction(Graphics2D g) {

@@ -2,6 +2,7 @@ package src;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JTextField;
 import javax.swing.plaf.ButtonUI;
 import javax.swing.plaf.basic.BasicButtonUI;
 
@@ -29,8 +30,9 @@ public class Frame extends JFrame {
         this.setMaximumSize(new Dimension(WIDTH, HEIGHT));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.add(graphicsHandler);
-        graphicsHandler.setLayout(null);
+        //graphicsHandler.setLayout(null);
 
+        // Reset button to clear all plants
         JButton reset = new JButton("reset");
         reset.setUI((ButtonUI) BasicButtonUI.createUI(reset));
         reset.setForeground(new Color(255, 255, 255));
@@ -38,25 +40,49 @@ public class Frame extends JFrame {
         reset.setContentAreaFilled(false);
         reset.setFont(new Font("Helvetica Neue", Font.BOLD, 32));
         reset.setFocusPainted(false);
-        reset.addActionListener(new Reset());
-        reset.setSize(120, 30);
-        reset.setLocation(20, 40);
+        reset.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                graphicsHandler.reset();
+            }
+        });
+        //reset.setSize(120, 30);
+        //reset.setLocation(20, 40);
         graphicsHandler.add(reset);
+
+        // Handles user inputted function
+        JTextField funcText = new JTextField("Type a function here", 30);
+        funcText.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                graphicsHandler.updateFunction(funcText.getText());
+                funcText.setText("");
+            }
+        });
+        graphicsHandler.add(funcText);
+
+        // Enter user input button
+        JButton funcTextBtn = new JButton("enter");
+        funcTextBtn.setUI((ButtonUI) BasicButtonUI.createUI(reset));
+        funcTextBtn.setForeground(new Color(255, 255, 255));
+        funcTextBtn.setMargin(new Insets(0,0,0,0));
+        funcTextBtn.setContentAreaFilled(false);
+        funcTextBtn.setFont(new Font("Helvetica Neue", Font.BOLD, 32));
+        funcTextBtn.setFocusPainted(false);
+        funcTextBtn.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                graphicsHandler.updateFunction(funcText.getText());
+                funcText.setText("");
+            }
+        });
+        graphicsHandler.add(funcTextBtn);
 
         this.getContentPane().addMouseListener(new PlantListener());
 
         this.setVisible(true);
-    }
-
-    /**
-     * Handles clicking the reset button (clears all plants)
-     */
-    static class Reset implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            graphicsHandler.reset();
-        }
-
     }
 }
