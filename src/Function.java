@@ -24,17 +24,26 @@ public class Function {
     private static final Set<String> FUNCTIONS = new HashSet<>(Arrays.asList(
         "sin", "cos", "tan", "csc", "sec", "cot", "abs", "sqrt"));
     
-    // operations and precedence levels
-    private static HashMap<String, Integer> operations = new HashMap<String, Integer>();
+    // chars that can be used as independent vars (i.e. x)
+    private static final Set<String> VARS = new HashSet<>(Arrays.asList("x"));
+
+    // ops in here are right associative
     private static final Set<String> RIGHT_ASC = new HashSet<>(Arrays.asList("^"));
 
+    // operations and precedence levels
+    private static HashMap<String, Integer> operations = new HashMap<String, Integer>();
+
     private String functionString;
+    private ArrayList<String> rpn;
     private ArrayList<Coordinate> functionNodes;
+
+    private int nodeNumber;
 
     public Function(String functionString, int nodeNumber) {
         initializeOps();
         this.functionString = functionString;
-        //parseFunctionString(functionString);
+        this.rpn = parseFunctionString(functionString);
+        this.nodeNumber = nodeNumber;
         createFunctionTree(nodeNumber);
     }
 
@@ -48,18 +57,19 @@ public class Function {
 
     public void setFunction(String functionString) {
         this.functionString = functionString;
-        parseFunctionString(functionString);
+        this.rpn = parseFunctionString(functionString);
+        createFunctionTree(nodeNumber);
     }
 
     // parses a function and converts into RPN using the Shunting-Yard algorithm
-    private void parseFunctionString(String functionString){
+    private ArrayList<String> parseFunctionString(String functionString){
         int len = functionString.length();
         ArrayList<String> output = new ArrayList<String>();
         Stack<String> opStack = new Stack<String>();
         int i = 0;
         while (i < len) {
             String token = functionString.substring(i, i+1);
-            if (DIGITS.contains(token)) output.add(token);
+            if (DIGITS.contains(token) || VARS.contains(token)) output.add(token);
             else if (FUNCTIONS.contains(token)) opStack.push(token);
             else if (operations.containsKey(token)){
                 while ((opStack.size() != 0 && operations.containsKey(opStack.peek()))
@@ -79,23 +89,48 @@ public class Function {
         }
         while (opStack.size() > 0) output.add(opStack.pop());
         System.out.println(output);
+        return output;
+    }
+
+    // evaluates the function at a given input value
+    public double evalFunction(double x) {
+        String xStr = Double.toString(x);
+        Stack<String> evalStack = new Stack<String>();
+        double result = 0;
+        for (String s : rpn){
+            if (VARS.contains(s)) evalStack.push(xStr);
+            else if (DIGITS.contains(s)) evalStack.push(s);
+            else if (operations.containsKey(s)) {
+                double val1 = Double.parseDouble(evalStack.pop());
+                double val2 = Double.parseDouble(evalStack.pop());
+                if(s.equals("^")) result = Math.pow(val2, val1);
+                else if(s.equals("*")) result = val2 * val1;
+                else if(s.equals("/")) result = val2 / val1;
+                else if(s.equals("+")) result = val2 + val1;
+                else if(s.equals("-")) result = val2 - val1;
+                evalStack.push(Double.toString(result));
+            }
+        }
+        return Double.parseDouble(evalStack.pop());
     }
 
     private void createFunctionTree(int nodeNumber) {
-
         functionNodes = new ArrayList<Coordinate>();
         int count = 0;
-        for(int i = -Frame.WIDTH/2; count < nodeNumber*10; i = i + Frame.WIDTH/nodeNumber){
-            double x = (double)(i)/10.0;
-            double y = 2.0*(x*x)*Math.sin((x*x))/10.0;
+        for(int i = -Frame.WIDTH/2; count < nodeNumber*15; i = i + Frame.WIDTH/nodeNumber) {
+            double x = (double)(i)/15;
+            //double y = 2.0*(x*x)*Math.sin((x*x))/15;
+            double y = evalFunction(x);
             functionNodes.add(new Coordinate(i, (int)(y)));
-            count ++;
+            count++;
         }
     }
 
     public void paintFunction(Graphics2D g) {
         for(int i = 0; i < functionNodes.size()-2; i++){
             g.fillOval(functionNodes.get(i).getDisplayX(),functionNodes.get(i).getY(),1,1);
+            Stroke stroke = new BasicStroke(6f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+            g.setStroke(stroke);
             g.setColor(Color.black);
             g.drawLine(functionNodes.get(i).getDisplayX(),functionNodes.get(i).getDisplayY(),functionNodes.get(i+1).getDisplayX(),functionNodes.get(i+1).getDisplayY());
         }

@@ -52,7 +52,7 @@ public class Frame extends JFrame {
         graphicsHandler.add(reset);
 
         // Handles user inputted function
-        JTextField funcText = new JTextField("Type a function here", 30);
+        JTextField funcText = new JTextField("", 30);
         funcText.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
