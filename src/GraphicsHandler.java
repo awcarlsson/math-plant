@@ -63,6 +63,6 @@ public class GraphicsHandler extends JPanel implements ActionListener {
 
     public void updateFunction(String funcString){
         f.setFunction(funcString);
-        System.out.println(funcString);
+        //System.out.println(funcString);
     }
 }

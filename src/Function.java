@@ -6,6 +6,8 @@ import java.lang.Math;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
@@ -16,34 +18,67 @@ import java.util.Stack;
 public class Function {
 
     // numerical digits
-    private static final Set<Character> DIGITS = new HashSet<>(Arrays.asList('0','1','2','3','4','5','6','7','8','9'));
+    private static final Set<String> DIGITS = new HashSet<>(Arrays.asList("0","1","2","3","4","5","6","7","8","9"));
 
-    // 
+    // functions
+    private static final Set<String> FUNCTIONS = new HashSet<>(Arrays.asList(
+        "sin", "cos", "tan", "csc", "sec", "cot", "abs", "sqrt"));
+    
+    // operations and precedence levels
+    private static HashMap<String, Integer> operations = new HashMap<String, Integer>();
+    private static final Set<String> RIGHT_ASC = new HashSet<>(Arrays.asList("^"));
 
-    //private final String 
     private String functionString;
     private ArrayList<Coordinate> functionNodes;
 
     public Function(String functionString, int nodeNumber) {
+        initializeOps();
         this.functionString = functionString;
         //parseFunctionString(functionString);
         createFunctionTree(nodeNumber);
     }
 
+    private void initializeOps(){
+        operations.put("^", 1);
+        operations.put("*", 2);
+        operations.put("/", 2);
+        operations.put("+", 3);
+        operations.put("-", 3);
+    }
+
     public void setFunction(String functionString) {
         this.functionString = functionString;
+        parseFunctionString(functionString);
     }
 
     // parses a function and converts into RPN using the Shunting-Yard algorithm
     private void parseFunctionString(String functionString){
         int len = functionString.length();
-        ArrayList<Character> output = new ArrayList<Character>();
-        Stack<Character> opStack = new Stack<Character>();
+        ArrayList<String> output = new ArrayList<String>();
+        Stack<String> opStack = new Stack<String>();
         int i = 0;
-        while (i < len){
-            char token = functionString.charAt(i);
-            //if (token 
+        while (i < len) {
+            String token = functionString.substring(i, i+1);
+            if (DIGITS.contains(token)) output.add(token);
+            else if (FUNCTIONS.contains(token)) opStack.push(token);
+            else if (operations.containsKey(token)){
+                while ((opStack.size() != 0 && operations.containsKey(opStack.peek()))
+                        && ((operations.get(opStack.peek()) < operations.get(token))
+                        || (operations.get(opStack.peek()) == operations.get(token) && !RIGHT_ASC.contains(token)))
+                        && (!opStack.peek().equals("("))) {
+                    output.add(opStack.pop());
+                }
+                opStack.push(token);
+            }
+            else if (token.equals("(")) opStack.push(token);
+            else if (token.equals(")")){
+                while(!opStack.peek().equals("(")) output.add(opStack.pop());
+                if(opStack.peek().equals("(")) opStack.pop();
+            }
+            i++;
         }
+        while (opStack.size() > 0) output.add(opStack.pop());
+        System.out.println(output);
     }
 
     private void createFunctionTree(int nodeNumber) {
@@ -65,5 +100,4 @@ public class Function {
             g.drawLine(functionNodes.get(i).getDisplayX(),functionNodes.get(i).getDisplayY(),functionNodes.get(i+1).getDisplayX(),functionNodes.get(i+1).getDisplayY());
         }
     }
-    
 }
