@@ -74,9 +74,18 @@ public class Function {
                  tokenized.add(funcToken);
                  i+=3;
             }
-            else if(operations.containsKey(token) || VARS.contains(token) || token.equals("(") || token.equals(")")) {
+            else if(operations.containsKey(token) || VARS.contains(token) || token.equals("(")) {
                 tokenized.add(token);
                 i++;
+            }
+            else if(token.equals(")")) {
+                tokenized.add(token);
+                i++;
+                // implicit multiplication (i.e. (x+2)(x+5) instead of (x+2)*(x+5))
+                if(i != len){
+                    token = functionString.substring(i, i+1);
+                    if(!operations.containsKey(token) && !token.equals(")")) tokenized.add("*");
+                }
             }
             else if(DIGITS.contains(token)) {
                 int k = i;
@@ -85,12 +94,16 @@ public class Function {
                     result += token;
                     k++;
                     if(k != len) token = functionString.substring(k, k+1);
+                    //System.out.println(token + " " + k + " " + len);
                 }
                 tokenized.add(result);
+                // implicit multiplication (i.e. 5x instead of 5*x)
+                if(k != len && !operations.containsKey(token) && !token.equals(")")) tokenized.add("*");
                 i+=k-i;
             }
             else i++;
         }
+        System.out.println(tokenized);
         return tokenized;
     }
     
@@ -121,6 +134,7 @@ public class Function {
             i++;
         }
         while (opStack.size() > 0) output.add(opStack.pop());
+        System.out.println(output);
         return output;
     }
 
