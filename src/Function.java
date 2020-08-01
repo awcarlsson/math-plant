@@ -22,7 +22,7 @@ public class Function {
 
     // functions
     private static final Set<String> FUNCTIONS = new HashSet<>(Arrays.asList(
-        "sin", "cos", "tan", "csc", "sec", "cot", "abs", "sqrt"));
+        "sin", "cos", "tan", "csc", "sec", "cot", "abs", "max", "min", "sqrt"));
     
     // chars that can be used as independent vars (i.e. x)
     private static final Set<String> VARS = new HashSet<>(Arrays.asList("x"));
@@ -42,7 +42,7 @@ public class Function {
     public Function(String functionString, int nodeNumber) {
         initializeOps();
         this.functionString = functionString;
-        this.rpn = parseFunctionString(functionString);
+        this.rpn = parseFunctionString(tokenize(functionString));
         this.nodeNumber = nodeNumber;
         createFunctionTree(nodeNumber);
     }
@@ -57,19 +57,52 @@ public class Function {
 
     public void setFunction(String functionString) {
         this.functionString = functionString;
-        this.rpn = parseFunctionString(functionString);
+        this.rpn = parseFunctionString(tokenize(functionString));;
         createFunctionTree(nodeNumber);
     }
 
-    // parses a function and converts into RPN using the Shunting-Yard algorithm
-    private ArrayList<String> parseFunctionString(String functionString){
+    // group together numbers, functions longer than one character
+    private ArrayList<String> tokenize(String functionString){
+        int i = 0;
         int len = functionString.length();
+        ArrayList<String> tokenized = new ArrayList<String>();
+        while (i < len) {
+            String token = functionString.substring(i, i+1);
+            String funcToken = "";
+            if (len - i >= 3) funcToken = functionString.substring(i, i+3);
+            if(FUNCTIONS.contains(funcToken)) {
+                 tokenized.add(funcToken);
+                 i+=3;
+            }
+            else if(operations.containsKey(token) || VARS.contains(token) || token.equals("(") || token.equals(")")) {
+                tokenized.add(token);
+                i++;
+            }
+            else if(DIGITS.contains(token)) {
+                int k = i;
+                String result = "";
+                while (k < len && DIGITS.contains(token)) {
+                    result += token;
+                    k++;
+                    if(k != len) token = functionString.substring(k, k+1);
+                }
+                tokenized.add(result);
+                i+=k-i;
+            }
+            else i++;
+        }
+        return tokenized;
+    }
+    
+    // parses a function and converts into RPN using the Shunting-Yard algorithm
+    private ArrayList<String> parseFunctionString(ArrayList<String> tokens){
+        int len = tokens.size();
         ArrayList<String> output = new ArrayList<String>();
         Stack<String> opStack = new Stack<String>();
         int i = 0;
         while (i < len) {
-            String token = functionString.substring(i, i+1);
-            if (DIGITS.contains(token) || VARS.contains(token)) output.add(token);
+            String token = tokens.get(i);
+            if (DIGITS.contains(token.substring(0,1)) || VARS.contains(token)) output.add(token);
             else if (FUNCTIONS.contains(token)) opStack.push(token);
             else if (operations.containsKey(token)){
                 while ((opStack.size() != 0 && operations.containsKey(opStack.peek()))
@@ -88,7 +121,6 @@ public class Function {
             i++;
         }
         while (opStack.size() > 0) output.add(opStack.pop());
-        System.out.println(output);
         return output;
     }
 
@@ -99,15 +131,42 @@ public class Function {
         double result = 0;
         for (String s : rpn){
             if (VARS.contains(s)) evalStack.push(xStr);
-            else if (DIGITS.contains(s)) evalStack.push(s);
+            else if (DIGITS.contains(s.substring(0,1))) evalStack.push(s);
             else if (operations.containsKey(s)) {
                 double val1 = Double.parseDouble(evalStack.pop());
                 double val2 = Double.parseDouble(evalStack.pop());
+                //System.out.println("Evaluating: " + val2 + s + val1);
                 if(s.equals("^")) result = Math.pow(val2, val1);
                 else if(s.equals("*")) result = val2 * val1;
-                else if(s.equals("/")) result = val2 / val1;
+                else if(s.equals("/")) {
+                    if(val1 != 0)
+                        result = val2 / val1;
+                    else
+                        result = -6969;
+                }
                 else if(s.equals("+")) result = val2 + val1;
                 else if(s.equals("-")) result = val2 - val1;
+                //System.out.println(result);
+                evalStack.push(Double.toString(result));
+            }
+            else if (FUNCTIONS.contains(s)) {
+                double val1 = Double.parseDouble(evalStack.pop());
+                if(s.equals("sin")) result = Math.sin(val1);
+                else if(s.equals("cos")) result = Math.cos(val1);
+                else if(s.equals("tan")) result = Math.tan(val1);
+                else if(s.equals("csc")) {
+                    result = 1/Math.sin(val1);
+                }
+                else if(s.equals("sec")) {
+                    result = 1/Math.cos(val1);
+                }
+                else if(s.equals("cot")) {
+                    result = 1/Math.tan(val1);
+                }
+                else if(s.equals("max")) {
+                    double val2 = Double.parseDouble(evalStack.pop());
+                    result = Math.max(val1, val2);
+                }
                 evalStack.push(Double.toString(result));
             }
         }
