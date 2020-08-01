@@ -94,7 +94,6 @@ public class Function {
                     result += token;
                     k++;
                     if(k != len) token = functionString.substring(k, k+1);
-                    //System.out.println(token + " " + k + " " + len);
                 }
                 tokenized.add(result);
                 // implicit multiplication (i.e. 5x instead of 5*x)
@@ -189,19 +188,19 @@ public class Function {
 
     private void createFunctionTree(int nodeNumber) {
         functionNodes = new ArrayList<Coordinate>();
-        int count = 0;
-        for(int i = -Frame.WIDTH/2; count < nodeNumber*15; i = i + Frame.WIDTH/nodeNumber) {
-            double x = (double)(i)/15;
-            //double y = 2.0*(x*x)*Math.sin((x*x))/15;
-            double y = evalFunction(x);
+        double scale = 6;
+        double horizScale = scale/(double)(Frame.WIDTH/2);
+        double vertScale = scale/(double)(Frame.HEIGHT/2);
+        for(int i = -Frame.WIDTH/2; i <= Frame.WIDTH/2; i++) {
+            double x = i*horizScale;
+            double y = evalFunction(x)/horizScale;
             functionNodes.add(new Coordinate(i, (int)(y)));
-            count++;
+            i+=Frame.WIDTH/nodeNumber;
         }
     }
 
     public void paintFunction(Graphics2D g) {
-        for(int i = 0; i < functionNodes.size()-2; i++){
-            g.fillOval(functionNodes.get(i).getDisplayX(),functionNodes.get(i).getY(),1,1);
+        for(int i = 0; i < functionNodes.size()-1; i++){
             Stroke stroke = new BasicStroke(6f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
             g.setStroke(stroke);
             g.setColor(Color.black);
