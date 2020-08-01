@@ -102,6 +102,27 @@ public class Function {
             }
             else i++;
         }
+        for (i = 0; i < tokenized.size(); i++) {
+            if (tokenized.get(i).equals("-") && (i == 0 || operations.containsKey(tokenized.get(i-1)) 
+            || tokenized.get(i-1).equals("("))) {
+                int k = i+1;
+                boolean negApplied = false;
+                while (!negApplied) {
+                    String token = tokenized.get(k);
+                    if(DIGITS.contains(token.substring(0,1)) || VARS.contains(token)) {
+                        tokenized.add(k+1, ")");
+                        tokenized.add(i, "0");
+                        tokenized.add(i, "(");
+                        negApplied = true;
+                    }
+                    k++;
+                    if(k == tokenized.size()) {
+                        negApplied = true;
+                    }
+                }
+            }
+        }
+        System.out.println(tokenized);
         return tokenized;
     }
     
@@ -147,7 +168,15 @@ public class Function {
             else if (operations.containsKey(s)) {
                 double val1 = Double.parseDouble(evalStack.pop());
                 double val2 = Double.parseDouble(evalStack.pop());
-                if(s.equals("^")) result = Math.pow(val2, val1);
+                if(s.equals("^")) {
+                    // TODO: deal with invalid sqrt
+                    // if(val2 < 0 && Math.abs(val1) > 0 && Math.abs(val1) < 1) {
+                    //     result = Integer.MAX_VALUE;
+                    //     System.out.println("returned mAX");
+                    // }
+                    // else
+                    result = Math.pow(val2, val1);
+                }
                 else if(s.equals("*")) result = val2 * val1;
                 else if(s.equals("/")) {
                     if(val1 != 0)
