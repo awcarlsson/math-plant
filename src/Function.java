@@ -102,7 +102,6 @@ public class Function {
             }
             else i++;
         }
-        System.out.println(tokenized);
         return tokenized;
     }
     
@@ -148,18 +147,16 @@ public class Function {
             else if (operations.containsKey(s)) {
                 double val1 = Double.parseDouble(evalStack.pop());
                 double val2 = Double.parseDouble(evalStack.pop());
-                //System.out.println("Evaluating: " + val2 + s + val1);
                 if(s.equals("^")) result = Math.pow(val2, val1);
                 else if(s.equals("*")) result = val2 * val1;
                 else if(s.equals("/")) {
                     if(val1 != 0)
                         result = val2 / val1;
                     else
-                        result = -6969;
+                        result = Double.POSITIVE_INFINITY;
                 }
                 else if(s.equals("+")) result = val2 + val1;
                 else if(s.equals("-")) result = val2 - val1;
-                //System.out.println(result);
                 evalStack.push(Double.toString(result));
             }
             else if (FUNCTIONS.contains(s)) {
@@ -188,13 +185,17 @@ public class Function {
 
     private void createFunctionTree(int nodeNumber) {
         functionNodes = new ArrayList<Coordinate>();
-        double scale = 6;
+        double scale = 6; // range of x values on screen
         double horizScale = scale/(double)(Frame.WIDTH/2);
-        double vertScale = scale/(double)(Frame.HEIGHT/2);
         for(int i = -Frame.WIDTH/2; i <= Frame.WIDTH/2; i++) {
             double x = i*horizScale;
-            double y = evalFunction(x)/horizScale;
-            functionNodes.add(new Coordinate(i, (int)(y)));
+            double y = evalFunction(x);
+            int scaledY = 0;
+            if (y == Double.POSITIVE_INFINITY)
+                scaledY = Integer.MAX_VALUE;
+            else
+                scaledY = (int)(y/horizScale);
+            functionNodes.add(new Coordinate(i, scaledY));
             i+=Frame.WIDTH/nodeNumber;
         }
     }
@@ -204,7 +205,8 @@ public class Function {
             Stroke stroke = new BasicStroke(6f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
             g.setStroke(stroke);
             g.setColor(Color.black);
-            g.drawLine(functionNodes.get(i).getDisplayX(),functionNodes.get(i).getDisplayY(),functionNodes.get(i+1).getDisplayX(),functionNodes.get(i+1).getDisplayY());
+            if(Math.abs(functionNodes.get(i).getY() - functionNodes.get(i+1).getY()) < 5000)
+                g.drawLine(functionNodes.get(i).getDisplayX(),functionNodes.get(i).getDisplayY(),functionNodes.get(i+1).getDisplayX(),functionNodes.get(i+1).getDisplayY());
         }
     }
 }

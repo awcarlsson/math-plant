@@ -15,7 +15,7 @@ public class GraphicsHandler extends JPanel implements ActionListener {
 
     // Global objects in scene
     private static ArrayList<Plant> plants = new ArrayList<Plant>();
-    private static Function f = new Function("x^2", 100);
+    private static Function f = new Function("x^2", 250);
     private static Background b = new Background(Frame.HEIGHT*3/4);
     private static Light l = new Light(0, 300, 50);
 
